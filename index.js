@@ -11,17 +11,18 @@ fetch('https://restcountries.com/v3.1/all')
         const regionList = new Set();
 
         countries.forEach(country => {
+            // creating and append card into countries-container
             extractAppend(country);
             regionList.add(country.region);
         })
-        /*loading region in filter by region button*/
+        /*appending regions in "filter by region" button*/
         Array.from(regionList.values()).forEach(region => {
             const li = document.createElement('li');
             li.innerText = region;
             document.querySelector('.select ul').append(li);
         })
 
-        // search for country input field
+        // "search for country" input field
         document.querySelector('form').addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -30,9 +31,18 @@ fetch('https://restcountries.com/v3.1/all')
 
             document.querySelector('.countries-container').innerHTML = " ";
             countries.forEach(country => {
+                // appdend card depending on search value
                 if (country.name.common.toLowerCase().slice(0, 4) == value) {
+                    // updating the "Filter by region"
+                    select.querySelector('p').innerHTML = country.region;
+
                     extractAppend(country);
+
                 } else if ('' == value) {
+
+                    // updating the "Filter by region"
+                    select.querySelector('p').innerHTML = "Filter by Region";
+
                     extractAppend(country);
                 }
             })
@@ -40,16 +50,31 @@ fetch('https://restcountries.com/v3.1/all')
             // showing "not found"
             console.log(document.querySelector('.countries-container').children.length);
             if (document.querySelector('.countries-container').children.length == 0) {
+
+                // updating the "Filter by region"
+                select.querySelector('p').innerHTML = "Filter by Region";
+
                 document.querySelector(".not-found").classList.remove('hide');
             } else {
                 document.querySelector(".not-found").classList.add('hide');
             }
-            // showing not found  end
         })
 
+        // showing country depending up the filter;
         const regionBox = document.querySelector('.select ul')
-        regionBox.addEventListener('click', e => {
+        regionBox.addEventListener('mousedown', e => {
+
+            // erasing the search value 
+            form.querySelector('input').value = ''
+
+            // hiding the regionBox menu
+            document.querySelector('.select ul').style.display = "none";
+
+            // the the region name from "filter by region" button;
             const region = e.target.innerText.toLowerCase();
+
+            // change the "filter by name " to selected region
+            select.querySelector('p').innerHTML = region[0].toUpperCase() + region.slice(1);
 
             document.querySelector('.countries-container').innerHTML = " ";
 
@@ -64,15 +89,19 @@ fetch('https://restcountries.com/v3.1/all')
                     extractAppend(country);
                 });
             }
+        })
 
+        // going to the next page
+        document.querySelector('.countries-container').addEventListener('click', e => {
 
-
+            console.log(e.target.closest('.country-card'));
         })
 
     });
 
-let dark = false;
 
+
+let dark = false;
 const themeButton = document.querySelector('.mode-button');
 themeButton.addEventListener('click', () => {
 
@@ -99,6 +128,8 @@ document.querySelector('.select').addEventListener('mouseout', () => {
     document.querySelector('.select ul').style.display = "none";
 })
 
+
+// takes a country object, destructure it and append into  " div.country-container"
 function extractAppend(country) {
     const {
         name: { common: name },
@@ -112,6 +143,7 @@ function extractAppend(country) {
     )
 }
 
+// return a card, it takes object as the paramater
 function createCountryCard({ name, image, population, region, capital }) {
     const countryCard = document.createElement('div');
     countryCard.classList.add('country-card');
