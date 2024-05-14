@@ -3,6 +3,16 @@ const form = document.querySelector('form');
 const select = document.querySelector('.select');
 const header = document.querySelector('header')
 
+
+if (!localStorage.getItem('dark')) {
+    localStorage.setItem('dark', 'false');
+}
+
+let dark = localStorage.getItem('dark') == 'false' ? false : true;
+
+console.log(dark);
+
+
 fetch('https://restcountries.com/v3.1/all')
     .then((response) => response.json())
     .then(countries => {
@@ -12,7 +22,7 @@ fetch('https://restcountries.com/v3.1/all')
 
         countries.forEach(country => {
             // creating and append card into countries-container
-            extractAppend(country);
+            extractAppend(country, dark);
             regionList.add(country.region);
         })
         /*appending regions in "filter by region" button*/
@@ -36,14 +46,14 @@ fetch('https://restcountries.com/v3.1/all')
                     // updating the "Filter by region"
                     select.querySelector('p').innerHTML = country.region;
 
-                    extractAppend(country);
+                    extractAppend(country, dark);
 
                 } else if ('' == value) {
 
                     // updating the "Filter by region"
                     select.querySelector('p').innerHTML = "Filter by Region";
 
-                    extractAppend(country);
+                    extractAppend(country, dark);
                 }
             })
 
@@ -81,12 +91,12 @@ fetch('https://restcountries.com/v3.1/all')
             if (!(region == 'all')) {
                 countries.forEach(country => {
                     if (region == country.region.toLowerCase()) {
-                        extractAppend(country);
+                        extractAppend(country, dark);
                     }
                 });
             } else {
                 countries.forEach(country => {
-                    extractAppend(country);
+                    extractAppend(country, dark);
                 });
             }
         })
@@ -107,29 +117,35 @@ fetch('https://restcountries.com/v3.1/all')
             }
 
         })
+
+        modeChange(dark);
+        const themeButton = document.querySelector('.mode-button');
+        themeButton.addEventListener('click', () => {
+
+            localStorage.getItem('dark') == 'true' ?
+                localStorage.setItem('dark', 'false') :
+                localStorage.setItem('dark', 'true');
+            let dark = localStorage.getItem('dark') == 'false' ? false : true;
+
+            modeChange(dark);
+
+        })
     });
 
-
-
-let dark = false;
-const themeButton = document.querySelector('.mode-button');
-
-themeButton.addEventListener('click', () => {
-
+function modeChange(mode) {
     const allCards = document.querySelectorAll('.country-card');
-
-    if (!dark) {
+    if (mode) {
+        console.log(mode);
         [form, select, header].forEach(item => item.classList.add('dark-primary'));
         allCards.forEach(card => card.classList.add('dark-primary'));
         body.classList.add("dark-secondary");
-        dark = true;
-    } else {
+    } else if (!mode) {
         [form, select, header].forEach(item => item.classList.remove('dark-primary'));
         allCards.forEach(card => card.classList.remove('dark-primary'));
         body.classList.remove("dark-secondary");
-        dark = false;
     }
-})
+}
+
 
 /*hover on filter region*/
 document.querySelector('.select').addEventListener('mouseover', () => {
@@ -155,7 +171,7 @@ function extractAppend(country) {
 }
 
 // return a card, it takes object as the paramater
-function createCountryCard({ name, image, population, region, capital }) {
+function createCountryCard({ name, image, population, region, capital }, dark) {
     const countryCard = document.createElement('div');
     countryCard.classList.add('country-card');
 

@@ -12,6 +12,10 @@ const url = new URL(location.href);
 const countryName = url.searchParams.get('name');
 const link = url.searchParams.get('link');
 
+if (!localStorage.getItem('dark')) {
+    localStorage.setItem('dark', 'false');
+}
+let dark = localStorage.getItem('dark') == 'false' ? false : true;
 /*
  * change the url based on the weither is ti clicked  on border or cards
     *
@@ -44,6 +48,19 @@ fetch(`https://restcountries.com/v3.1/${link}/${countryName}`)
         const backButton = document.querySelector('.container i');
         backButton.addEventListener('mousedown', () => {
             location.href = '/index.html'
+        })
+
+        modeChange(dark);
+        const themeButton = document.querySelector('.mode-button');
+        themeButton.addEventListener('click', () => {
+
+            localStorage.getItem('dark') == 'true' ?
+                localStorage.setItem('dark', 'false') :
+                localStorage.setItem('dark', 'true');
+            let dark = localStorage.getItem('dark') == 'false' ? false : true;
+
+            modeChange(dark);
+
         })
 
 
@@ -99,25 +116,18 @@ function createCard(data) {
     return div;
 }
 
-let dark = false;
-const themeButton = document.querySelector('.mode-button');
 
-themeButton.addEventListener('click', () => {
-
-    const allCards = document.querySelectorAll('.country-card');
-
-    if (!dark) {
-        borders.forEach(item => item.classList.add('dark-primary'));
+function modeChange(mode) {
+    if (mode) {
+        console.log(mode);
+        header.classList.add('dark-primary');
         body.classList.add("dark-secondary");
-        header.classList.add("dark-primary");
-        dark = true;
-    } else {
-        borders.forEach(item => item.classList.remove('dark-primary'));
+    } else if (!mode) {
+        header.classList.remove('dark-primary');
         body.classList.remove("dark-secondary");
-        header.classList.remove("dark-primary");
-        dark = false;
     }
-})
+}
+
 ///=======================================
 // {
 //     "sqi": {
