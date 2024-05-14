@@ -10,7 +10,7 @@ if (!localStorage.getItem('dark')) {
 
 let dark = localStorage.getItem('dark') == 'false' ? false : true;
 
-console.log(dark);
+modeChange(dark);
 
 
 fetch('https://restcountries.com/v3.1/all')

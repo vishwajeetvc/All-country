@@ -16,6 +16,8 @@ if (!localStorage.getItem('dark')) {
     localStorage.setItem('dark', 'false');
 }
 let dark = localStorage.getItem('dark') == 'false' ? false : true;
+
+modeChange(dark);
 /*
  * change the url based on the weither is ti clicked  on border or cards
     *
