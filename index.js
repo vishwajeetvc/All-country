@@ -97,8 +97,13 @@ fetch('https://restcountries.com/v3.1/all')
 
             const countryName = countryCard?.children[1].querySelector('.name').innerHTML;
 
+            const url = new URL('/country.html', location.href);
+            console.log(url)
+            url.searchParams.set('link', 'name');
+            url.searchParams.set('name', countryName);
+
             if (countryName) {
-                location.href = `/country.html?name=${countryName}`;
+                location.href = url;
             }
 
         })

@@ -8,10 +8,15 @@ const body = document.body;
 const borders = document.querySelectorAll('a');
 
 
+const url = new URL(location.href);
+const countryName = url.searchParams.get('name');
+const link = url.searchParams.get('link');
+
 /*
  * change the url based on the weither is ti clicked  on border or cards
+    *
     */
-fetch(`https://restcountries.com/v3.1/name/${location.href.split('=')[1]}`)
+fetch(`https://restcountries.com/v3.1/${link}/${countryName}`)
     .then(response => response.json())
     .then(ctry => {
 
@@ -21,9 +26,13 @@ fetch(`https://restcountries.com/v3.1/name/${location.href.split('=')[1]}`)
 
         const borderList = document.querySelector('.border-list')
         borders?.forEach(border => {
+            const url = new URL(location.href)
+            url.searchParams.set('link', 'alpha')
+            url.searchParams.set('name', border)
+
             const a = document.createElement('a');
             a.innerHTML = border;
-            a.href = `#`;
+            a.href = url;
             borderList.append(a);
         });
 
@@ -32,10 +41,15 @@ fetch(`https://restcountries.com/v3.1/name/${location.href.split('=')[1]}`)
         }
 
 
+        const backButton = document.querySelector('.container i');
+        backButton.addEventListener('mousedown', () => {
+            location.href = '/index.html'
+        })
+
 
     })
 function createCard(data) {
-    console.log(data)
+    // console.log(data)
     const {
         flags: {
             svg: image

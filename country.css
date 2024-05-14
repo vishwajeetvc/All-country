@@ -22,12 +22,30 @@ header {
     max-width: 1240px;
 }
 
+p a {
+    text-decoration: none;
+    font-size: 24px;
+    color: #808080;
+}
 
 .mode-button {
     padding: 10px;
 }
 
 .mode-button:hover {
+    cursor: pointer;
+}
+
+.container i {
+    font-size: 32px;
+    position: absolute;
+    color: grey;
+    bottom: 40px;
+    right: 0;
+
+}
+
+.container i:hover {
     cursor: pointer;
 }
 
@@ -39,10 +57,11 @@ main {
 }
 
 .container {
+    position: relative;
     width: 300px;
     margin-inline: auto;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.01);
+    /* background: rgba(0, 0, 0, 0.01); */
 }
 
 img {
@@ -84,4 +103,44 @@ p {
 
 .hide {
     display: none;
+}
+
+@media (min-width:800px) {
+    .container {
+        width: 80%;
+    }
+
+    .card {
+        display: grid;
+        grid-template-areas:
+            ' image left right'
+            ' image border border'
+        ;
+    }
+
+    p {
+        line-height: 32px;
+    }
+
+    .image {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        grid-area: image;
+    }
+
+    .left-top {
+        grid-area: left;
+    }
+
+    .right-bottom {
+        grid-area: right;
+        padding: 48px 20px;
+        margin-top: 45px;
+    }
+
+    .borders {
+        grid-area: border;
+    }
 }
