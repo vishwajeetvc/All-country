@@ -153,7 +153,7 @@ input[type="text"] {
 .country-card:hover {
     cursor: pointer;
     transform: scaleX(105%) scaleY(105%);
-    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
 }
 
 .country-card img {
@@ -175,14 +175,14 @@ input[type="text"] {
 }
 
 .not-found {
-    color: gray;
+    color: white;
     text-align: center;
     font-size: 32px;
     font-weight: 900;
-    padding: 50px;
-    outline: 2px solid red;
+    padding: 24px;
     width: 50%;
     margin: auto;
+    background: red;
     border-radius: 9px;
 }
 

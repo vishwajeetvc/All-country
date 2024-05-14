@@ -93,16 +93,22 @@ fetch('https://restcountries.com/v3.1/all')
 
         // going to the next page
         document.querySelector('.countries-container').addEventListener('click', e => {
+            const countryCard = e.target.closest('.country-card');
 
-            console.log(e.target.closest('.country-card'));
+            const countryName = countryCard?.children[1].querySelector('.name').innerHTML;
+
+            if (countryName) {
+                location.href = `/country.html?name=${countryName}`;
+            }
+
         })
-
     });
 
 
 
 let dark = false;
 const themeButton = document.querySelector('.mode-button');
+
 themeButton.addEventListener('click', () => {
 
     const allCards = document.querySelectorAll('.country-card');
@@ -159,10 +165,10 @@ function createCountryCard({ name, image, population, region, capital }) {
         <img src="${image}" alt="flag">
         <div class="texts">
             <p class="name">${name}</p>
-            <p>Population : <span class="population">${population}</span></p>
+            <p>Population : <span class="population">${population.toLocaleString('en-IN')}</span ></p >
             <p>Region : <span class="region">${region}</span></p>
             <p>Capital : <span class="capital">${capital}</span></p>
-        </div>
+        </div >
     `;
     return countryCard;
 }
